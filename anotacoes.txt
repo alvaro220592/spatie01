@@ -1,0 +1,50 @@
+criação do projeto
+
+criação do banco de dados
+
+configuração do banco no .env
+
+composer require spatie/laravel-permission 
+
+em config/app.php, colar em 'providers':
+    Spatie\Permission\PermissionServiceProvider::class,
+
+publicar o provider:
+    php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+
+composer require laravel/ui
+
+php artisan ui vue --auth
+
+npm install
+
+npm run build
+
+php artisan migrate
+
+cadastrar roles
+    foram cadastradas 'user' e 'admin': insert into roles(name, guard_name, created_at) values ('admin', 'web', now()), ('user', 'web', now());
+
+cadastrar permissions
+    foram cadastradas algumas permissões de crud para usuários(o update foi substituido por edit. Para permissão, dá na mesma): insert into permissions(name, guard_name, created_at) values ('user_create', 'web', now()), ('user_read', 'web', now()), ('user_edit', 'web', now()), ('user_delete', 'web', now());
+
+cadastrar role_has_permissions
+    foram dadas todas as permissões ao admin(role com id 1) e apenas a 'read' para usuários com role 'user'(role com id 2): insert into role_has_permissions (permission_id, role_id) values (1, 1), (2, 1), (3, 1), (4, 1), (2, 2);
+
+na model User, dê um use na trait HasRoles(importação e chamada):
+    use Spatie\Permission\Traits\HasRoles;
+
+Cadastrar usuários
+
+atribuir roles a usuário
+    num usuário já cadastrado foi atribuída a role 'admin': insert into model_has_roles (role_id, model_type, model_id) values (1, 'App\\Models\\User', 1);
+    foi cadastrado um usuário e a ele foi atribuída a role 'user': insert into model_has_roles (role_id, model_type, model_id) values (2, 'App\\Models\\User', 2);
+    ao criar usuário, é melhor fazer a atribução com attach: ->roles()->attach(<<id da role>>)
+
+inserir os middlewares em app/Http/Kernel.php em '$routeMiddleware':
+    'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+    'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+    'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+
+inserir em um construct de controller:
+    $this->middleware(['role:admin']) ou 'role:user', etc
