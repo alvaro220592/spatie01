@@ -46,5 +46,18 @@ inserir os middlewares em app/Http/Kernel.php em '$routeMiddleware':
     'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
     'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
 
-inserir em um construct de controller:
-    $this->middleware(['role:admin']) ou 'role:user', etc
+inserir em um construct de controller (opcional):
+    $this->middleware(['role:admin']) ou 'role:user', etc pra determinar que aquele controller só vai rodar se o usuário tiver a role descrita
+    
+a partir de agora é possível inserir @can('user_algumaCoisa') em itens das telas
+
+para pegar os relacionamento entre as tabelas, é preciso extender:
+    use Spatie\Permission\Models\Role as SpatieRole;
+
+    class Role extends SpatieRole
+    {
+        use HasFactory;
+    }
+
+    Aí pra pegar as permissões dessa role:
+        {{ $role->permissions }}
