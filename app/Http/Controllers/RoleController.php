@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
-use App\Models\Role;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -16,8 +16,8 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-        $permissions = Permission::all();
-        return view('profile.index', compact('roles', 'permissions'));
+        $permissions = Permission::orderBy('name', 'asc')->get();
+        return view('settings.profile.index', compact('roles', 'permissions'));
     }
 
     /**
@@ -72,7 +72,21 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $role = Role::find($id);
+
+        try{
+            // Retirando as permissões para serem substituídas pelas que vieram marcadas
+            foreach($role->permissions as $permission){
+                $role->revokePermissionTo($permission->name);
+            }
+
+            // Dando as permissões que vieram marcadas
+            $role->syncPermissions($request->permissions);
+
+            return response()->json(['status' => 'ok', 'response' => 'Permissões atualizadas com sucesso']);
+        }catch(\Exception $e){
+            return response()->json(['status' => 'error', 'response' => $e->getMessage()]);
+        }
     }
 
     /**

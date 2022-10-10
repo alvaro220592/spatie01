@@ -19,6 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/perfis', [App\Http\Controllers\RoleController::class, 'index'])->name('perfis');
 
-Route::get('/perfis', [App\Http\Controllers\RoleController::class, 'index'])->name('perfis');
+    Route::get('/cadastros/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('users');
+    Route::post('/perfis/editar/{id}', [App\Http\Controllers\RoleController::class, 'update']);
+});
