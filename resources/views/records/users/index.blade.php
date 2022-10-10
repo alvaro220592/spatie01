@@ -19,7 +19,7 @@
                                     <th scope="col">Nome</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Cadastro</th>
-                                    @can(['user_read', 'user_edit', 'user_delete'])
+                                    @canany(['user_read', 'user_edit', 'user_delete'])
                                         <th>Ações</th>
                                     @endcan
                                 </tr>
@@ -32,7 +32,7 @@
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->created_at }}</td>
 
-                                        @can(['user_read', 'user_edit', 'user_delete'])
+                                        @canany(['user_read', 'user_edit', 'user_delete'])
                                             <td class="justify-content-between">
                                                 @can('user_read')
                                                     <i class="bi bi-eye-fill mx-1"></i>
