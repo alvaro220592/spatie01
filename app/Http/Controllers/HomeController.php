@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -13,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'role:user']);
+        $this->middleware(['auth']);
     }
 
     /**
@@ -23,6 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // dd(Auth::user()->hasRole('admin'));
+        // if(!Auth::user()->hasRole('admin')){
+        //     abort(403);
+        // }
         return view('home');
     }
 }
