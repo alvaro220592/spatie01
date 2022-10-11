@@ -20,6 +20,22 @@ npm install
 
 npm run build
 
+criar model e migration para Funcionalidades. Para que com isso seja possível fazer um foreach na view separando as permissões por funcionalidade. Ex: o bloco de permissões de clientes(cadastrar cliente, deletar cliente, etc) faz parte da funcionalidade de clientes. Então fica melhor pra mostrar na view algo como:
+
+Clientes  ---> nome da funcionalidade
+[] Visualizar  ---> checkboxes para marcar
+[] Cadastrar
+[] Editar
+[] Excluir
+
+Produtos
+[] Visualizar
+[] Cadastrar
+[] Editar
+[] Excluir
+
+adicionar na migration do spatie(create_permission_tables) uma fk da tabela de funcionalidades
+
 php artisan migrate
 
 cadastrar roles
@@ -51,13 +67,4 @@ inserir em um construct de controller (opcional):
     
 a partir de agora é possível inserir @can('user_algumaCoisa') em itens das telas
 
-para pegar os relacionamento entre as tabelas, é preciso extender:
-    use Spatie\Permission\Models\Role as SpatieRole;
-
-    class Role extends SpatieRole
-    {
-        use HasFactory;
-    }
-
-    Aí pra pegar as permissões dessa role:
-        {{ $role->permissions }}
+As models vêm do pacote spatie ao importar. Ex: Role vem de "use Spatie\Permission\Models\Role;"
