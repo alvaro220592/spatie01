@@ -24,11 +24,16 @@
                                             <ul class="permissions-list">
                                                 <form action="" method="post">
                                                     @csrf
-                                                    @foreach ($permissions as $permission)
-                                                        <!-- Se minha role tiver permissão para esta permission, vai ficar checkado -->
-                                                        <li>
-                                                            <input type="checkbox" name="{{ $permission->id }}" id="{{ $permission->id }}" class="role_{{ $role->id }}_permission" @if ($role->hasPermissionTo($permission->name)) checked @endif>&nbsp;<label for="{{ $permission->id }}">@lang("labels.$permission->name")</label>
-                                                        </li>
+                                                    @foreach ($funcionalities as $funcionality)                                                            
+                                                        <div class="mb-3">
+                                                            <strong>@lang("labels.profile.$funcionality->name")</strong>
+                                                            
+                                                            @foreach($funcionality->permissions as $permission)
+                                                                <li>
+                                                                    <input type="checkbox" name="{{ $permission->id }}" id="{{ $permission->id }}" class="role_{{ $role->id }}_permission" @if ($role->hasPermissionTo($permission->name)) checked @endif>&nbsp;<label for="{{ $permission->id }}">@lang("labels.$permission->name")</label>
+                                                                </li>
+                                                            @endforeach
+                                                        </div>
                                                     @endforeach
                                                     <button class="btn btn-dark mt-2" type="submit" onclick="updateRole(event, {{ $role->id }})">Salvar</button>
                                                 </form>
@@ -44,4 +49,3 @@
         </div>
     </div>
 @endsection
-

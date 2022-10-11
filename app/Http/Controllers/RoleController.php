@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Funcionality;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -16,8 +17,8 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-        $permissions = Permission::orderBy('name', 'asc')->get();
-        return view('settings.profile.index', compact('roles', 'permissions'));
+        $funcionalities = Funcionality::all();
+        return view('settings.profile.index', compact('roles', 'funcionalities'));
     }
 
     /**
