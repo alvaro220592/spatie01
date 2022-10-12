@@ -24,5 +24,5 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/perfis', [App\Http\Controllers\RoleController::class, 'index'])->name('perfis');
 
     Route::get('/cadastros/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('users');
-    Route::post('/perfis/editar/{id}', [App\Http\Controllers\RoleController::class, 'update']);
+    Route::resource('/perfis', App\Http\Controllers\RoleController::class);
 });
