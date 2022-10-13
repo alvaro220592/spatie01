@@ -65,6 +65,9 @@
                                     <a class="dropdown-item" href="{{ route('users') }}">
                                         Usuários
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('perfis.index') }}">
+                                        Perfis de acesso
+                                     </a>
                                 </div>
                             </li>
                             @endcan
@@ -73,12 +76,6 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Configurações
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('perfis') }}">
-                                       Perfis de acesso
-                                    </a>
-                                </div>
                             </li>
 
                             <li class="nav-item dropdown">

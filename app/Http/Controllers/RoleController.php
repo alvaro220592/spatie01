@@ -18,7 +18,14 @@ class RoleController extends Controller
     {
         $roles = Role::all();
         $funcionalities = Funcionality::all();
-        return view('settings.profile.index', compact('roles', 'funcionalities'));
+        return view('records.roles.index', compact('roles', 'funcionalities'));
+    }
+
+    public function getRoles(){
+        return response()->json([
+            'roles' => Role::all(),
+            'funcionalities' => Funcionality::with('permissions')->get()
+        ]);
     }
 
     /**
@@ -39,7 +46,14 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $role = new Role;
+            $role->create($request->all())->givePermissionTo($request->permissions_list);
+            
+            return response()->json(['success' => true, 'response' => 'Cadastrado com sucesso']);
+        }catch(\Exception $e) {
+            return response()->json(['success' => false, 'response' => "Erro: " . $e->getMessage()]);
+        }
     }
 
     /**
@@ -84,9 +98,9 @@ class RoleController extends Controller
             // Dando as permissões que vieram marcadas
             $role->syncPermissions($request->permissions);
 
-            return response()->json(['status' => 'ok', 'response' => 'Permissões atualizadas com sucesso']);
+            return response()->json(['success' => true, 'response' => 'Permissões atualizadas com sucesso']);
         }catch(\Exception $e){
-            return response()->json(['status' => 'error', 'response' => $e->getMessage()]);
+            return response()->json(['success' => false, 'response' => $e->getMessage()]);
         }
     }
 
@@ -98,6 +112,18 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $role = Role::findById($id);
+            if(!$role){
+                return response()->json(['success' => false, 'response' => "Não encontrado"]);
+            }
+            $role->delete();
+
+            return response()->json(['success' => true, 'response' => "Excluído com sucesso"]);
+
+        }catch(\Exception $e){
+            $mensagem = $e->getMessage();
+            return response()->json(['success' => false, 'response' => "Erro ao deletar: $mensagem"]);
+        }
     }
 }
