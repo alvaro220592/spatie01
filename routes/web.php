@@ -21,8 +21,8 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/perfis', [App\Http\Controllers\RoleController::class, 'index'])->name('perfis');
+    Route::get('/perfis/getRoles', [App\Http\Controllers\RoleController::class, 'getRoles']);
+    Route::resource('/perfis', App\Http\Controllers\RoleController::class);
 
     Route::get('/cadastros/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('users');
-    Route::resource('/perfis', App\Http\Controllers\RoleController::class);
 });

@@ -21,6 +21,13 @@ class RoleController extends Controller
         return view('records.roles.index', compact('roles', 'funcionalities'));
     }
 
+    public function getRoles(){
+        return response()->json([
+            'roles' => Role::all(),
+            'funcionalities' => Funcionality::with('permissions')->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -105,6 +112,18 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $role = Role::findById($id);
+            if(!$role){
+                return response()->json(['success' => false, 'response' => "Não encontrado"]);
+            }
+            $role->delete();
+
+            return response()->json(['success' => true, 'response' => "Excluído com sucesso"]);
+
+        }catch(\Exception $e){
+            $mensagem = $e->getMessage();
+            return response()->json(['success' => false, 'response' => "Erro ao deletar: $mensagem"]);
+        }
     }
 }

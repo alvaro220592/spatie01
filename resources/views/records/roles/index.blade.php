@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card" id="teste">
                     <div class="card-header fs-5">Perfis de acesso</div>
 
                     <div class="card-body p-3">
@@ -54,7 +54,7 @@
                                                                 <button class="btn btn-dark btn-sm form-control" type="submit" onclick="updateRole(event, {{ $role->id }})">Salvar</button>
                                                             </div>
                                                             <div class="col-md-2 mb-2">
-                                                                <button class="btn btn-danger btn-sm form-control">Excluir</button>
+                                                                <button class="btn btn-danger btn-sm form-control" type="button" onclick="deleteRole({{ $role->id }})">Excluir</button>
                                                             </div>
                                                     </div>
                                                 </form>
@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>        
     </div>
 @endsection
 
